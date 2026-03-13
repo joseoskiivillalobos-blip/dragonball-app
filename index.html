@@ -2,276 +2,201 @@
 <html lang="es">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Dragon Ball Z Characters</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
-
 <style>
-
 body{
-margin:0;
-font-family:Arial;
-background:#000;
-color:white;
-text-align:center;
+  margin:0;
+  font-family:Arial;
+  background:#000;
+  color:white;
+  text-align:center;
 }
-
 header{
-background:linear-gradient(90deg,#ff8c00,#ff3c00);
-padding:20px;
-box-shadow:0 0 20px orange;
+  background:linear-gradient(90deg,#ff8c00,#ff3c00);
+  padding:20px;
+  box-shadow:0 0 20px orange;
 }
-
 header h1{
-font-family:'Bangers',cursive;
-font-size:36px;
-margin:0;
-letter-spacing:2px;
-text-shadow:0 0 10px yellow;
+  font-family:'Bangers',cursive;
+  font-size:36px;
+  margin:0;
+  letter-spacing:2px;
+  text-shadow:0 0 10px yellow;
 }
-
 input{
-margin-top:10px;
-padding:12px;
-border:none;
-border-radius:8px;
-width:220px;
-font-size:16px;
+  margin-top:10px;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  width:220px;
+  font-size:16px;
 }
-
 /* tarjetas */
-
 .container{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:18px;
-padding:18px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:18px;
+  padding:18px;
 }
-
 .card{
-background:#1a1a1a;
-border-radius:12px;
-padding:10px;
-cursor:pointer;
-transition:0.3s;
-border:2px solid orange;
-box-shadow:0 0 12px rgba(255,140,0,0.4);
+  background:#1a1a1a;
+  border-radius:12px;
+  padding:10px;
+  cursor:pointer;
+  transition:0.3s;
+  border:2px solid orange;
+  box-shadow:0 0 12px rgba(255,140,0,0.4);
 }
-
 .card:hover{
-transform:scale(1.05);
-box-shadow:0 0 20px orange;
+  transform:scale(1.05);
+  box-shadow:0 0 20px orange;
 }
-
 .card img{
-height:150px;
-object-fit:contain;
-filter:drop-shadow(0 0 8px yellow);
+  height:150px;
+  object-fit:contain;
+  filter:drop-shadow(0 0 8px yellow);
 }
-
 .card h3{
-margin:6px 0;
-color:#ffcc00;
-font-size:18px;
+  margin:6px 0;
+  color:#ffcc00;
+  font-size:18px;
 }
-
 .card p{
-margin:0;
-color:#ccc;
+  margin:0;
+  color:#ccc;
 }
-
 /* detalles */
-
 .details{
-display:none;
-padding:20px;
+  display:none;
+  padding:20px;
 }
-
 .details img{
-height:250px;
-filter:drop-shadow(0 0 20px yellow);
+  height:250px;
+  filter:drop-shadow(0 0 20px yellow);
 }
-
 .back{
-margin-bottom:20px;
-padding:12px 24px;
-border:none;
-background:linear-gradient(90deg,#ff8c00,#ff3c00);
-color:white;
-font-size:16px;
-border-radius:10px;
-cursor:pointer;
-box-shadow:0 0 10px orange;
+  margin-bottom:20px;
+  padding:12px 24px;
+  border:none;
+  background:linear-gradient(90deg,#ff8c00,#ff3c00);
+  color:white;
+  font-size:16px;
+  border-radius:10px;
+  cursor:pointer;
+  box-shadow:0 0 10px orange;
 }
-
 .stats{
-background:#1c1c1c;
-padding:18px;
-border-radius:12px;
-margin-top:15px;
-box-shadow:0 0 10px orange;
+  background:#1c1c1c;
+  padding:18px;
+  border-radius:12px;
+  margin-top:15px;
+  box-shadow:0 0 10px orange;
 }
-
 .stats p{
-margin:8px 0;
+  margin:8px 0;
 }
-
 </style>
-
 </head>
 
 <body>
-
 <header>
-
 <h1>🐉 Dragon Ball Z</h1>
-
 <input id="search" placeholder="Buscar personaje">
-
 </header>
 
 <div id="characters" class="container"></div>
 
 <div id="details" class="details">
-
 <button class="back" onclick="goBack()">⬅ Volver</button>
-
 <div id="characterInfo"></div>
-
 </div>
 
 <script>
-
 const container = document.getElementById("characters");
 const details = document.getElementById("details");
 const characterInfo = document.getElementById("characterInfo");
 const search = document.getElementById("search");
-
 let characters = [];
 
+// Cargar personajes desde API
 async function loadCharacters(){
-
-const res = await fetch("https://dragonball-api.com/api/characters?limit=100");
-
-const data = await res.json();
-
-characters = data.items;
-
-showCharacters(characters);
-
+  const res = await fetch("https://dragonball-api.com/api/characters?limit=100");
+  const data = await res.json();
+  characters = data.items;
+  showCharacters(characters);
 }
 
+// Mostrar tarjetas
 function showCharacters(list){
-
-container.innerHTML="";
-
-list.forEach(c=>{
-
-const card=document.createElement("div");
-
-card.className="card";
-
-card.innerHTML=`
-
-<img src="${c.image}">
-<h3>${translateName(c.name)}</h3>
-<p>${translateRace(c.race)}</p>
-
-`;
-
-card.onclick=()=>showDetails(c);
-
-container.appendChild(card);
-
-});
-
+  container.innerHTML="";
+  list.forEach(c=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
+      <img src="${c.image}">
+      <h3>${translateName(c.name)}</h3>
+      <p>${translateRace(c.race)}</p>
+    `;
+    card.onclick=()=>showDetails(c);
+    container.appendChild(card);
+  });
 }
 
+// Mostrar detalles de un personaje
 function showDetails(c){
-
-container.style.display="none";
-details.style.display="block";
-
-characterInfo.innerHTML=`
-
-<h2>${translateName(c.name)}</h2>
-
-<img src="${c.image}">
-
-<div class="stats">
-
-<p><b>Raza:</b> ${translateRace(c.race)}</p>
-<p><b>Género:</b> ${translateGender(c.gender)}</p>
-<p><b>Ki:</b> ${c.ki}</p>
-<p><b>Max Ki:</b> ${c.maxKi}</p>
-<p><b>Afiliación:</b> ${c.affiliation}</p>
-
-</div>
-
-<p style="margin-top:15px">${c.description || ""}</p>
-
-`;
-
+  container.style.display="none";
+  details.style.display="block";
+  characterInfo.innerHTML=`
+    <h2>${translateName(c.name)}</h2>
+    <img src="${c.image}">
+    <div class="stats">
+      <p><b>Raza:</b> ${translateRace(c.race)}</p>
+      <p><b>Género:</b> ${translateGender(c.gender)}</p>
+      <p><b>Ki:</b> ${c.ki}</p>
+      <p><b>Max Ki:</b> ${c.maxKi}</p>
+      <p><b>Afiliación:</b> ${c.affiliation}</p>
+    </div>
+    <p style="margin-top:15px">${c.description || ""}</p>
+  `;
 }
 
+// Volver a la lista
 function goBack(){
-
-details.style.display="none";
-container.style.display="grid";
-
+  details.style.display="none";
+  container.style.display="grid";
 }
 
+// Buscador
 search.addEventListener("input",()=>{
-
-const text=search.value.toLowerCase();
-
-const filtered=characters.filter(c =>
-c.name.toLowerCase().includes(text)
-);
-
-showCharacters(filtered);
-
+  const text=search.value.toLowerCase();
+  const filtered=characters.filter(c => c.name.toLowerCase().includes(text));
+  showCharacters(filtered);
 });
 
-/* traducciones */
-
+// Traducciones
 function translateName(name){
-
-return name
-.replace("Android","Androide")
-.replace("Frieza","Freezer")
-.replace("Master Roshi","Maestro Roshi");
-
+  return name.replace("Android","Androide");
 }
 
 function translateRace(race){
-
-if(race==="Android") return "Androide";
-if(race==="Saiyan") return "Saiyajin";
-if(race==="Human") return "Humano";
-if(race==="Namekian") return "Namekiano";
-if(race==="Frieza Race") return "Raza de Freezer";
-
-return race;
-
+  if(race==="Android") return "Androide";
+  if(race==="Saiyan") return "Saiyajin";
+  if(race==="Human") return "Humano";
+  if(race==="Namekian") return "Namekiano";
+  if(race==="Frieza Race") return "Raza de Freezer";
+  return race;
 }
 
 function translateGender(gender){
-
-if(gender==="Male") return "Masculino";
-if(gender==="Female") return "Femenino";
-
-return gender;
-
+  if(gender==="Male") return "Masculino";
+  if(gender==="Female") return "Femenino";
+  return gender;
 }
 
 loadCharacters();
-
 </script>
-
 </body>
 </html>
